@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8"/>
+    <script src="d3.js"></script>
+    <script src="FileData.js"></script>
+    <script src="FileDataNew.js"></script>
+    <style>
+      /* 3D affect from https://blog.logrocket.com/five-cool-css-header-styles-with-cross-browser-compatibility/ */
+      @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+      header h1 {
+        font-size: 50px;
+        font-weight: 600;
+        font-family: 'Roboto', sans-serif;
+        color: #b393d3;
+        text-transform: uppercase;
+        text-shadow: 1px 1px 0px #957dad,
+                    1px 2px 0px #957dad,
+                    1px 3px 0px #957dad,
+                    1px 4px 0px #957dad,
+                    1px 5px 0px #957dad,
+                    1px 6px 0px #957dad,
+                    1px 10px 5px rgba(16, 16, 16, 0.5),
+                    1px 15px 10px rgba(16, 16, 16, 0.4),
+                    1px 20px 30px rgba(16, 16, 16, 0.3),
+                    1px 25px 50px rgba(16, 16, 16, 0.2);
+      }
+      .selectSizeBox{
+        font-size: large;
+        border-radius:10px;
+        border:5px solid #AAAAAA;
+      }
+      .selectColorBox{
+        font-size: large;
+        border-radius: 10px;
+        border:5px solid #CCCCCC;
+      }
+      ul li { padding: 5px 0px; }
+    </style>
+  </head>
+  <body style="padding: 0; margin: 0">
+    <header>
+    <h1> Tree Map: V8 Bugs </h1>
+    </header>
+    <svg id="svg"></svg>
+    <div style="position: absolute; right: 1em; top: 1em">
+      <label for="sizeParam" style="font-size:25px;">Size Parameter</label>
+      <select class="selectSizeBox" name="sizeParam" id="sizeParam">
+        <option value="commits">Commits</option>
+        <option value="additions"> Additions </option>
+        <option value="subtracts"> Deletions </option>
+      </select>
+     
+      <label for="colorParam" style="font-size:25px;">Color Parameter</label>
+      <select class="selectColorBox" name="colorParam" id="colorParam">
+        <option value="depth">Depth</option>
+        <option value="difference">Difference</option>
+        <option value="check"> Check Type </option>
+        <option value="crash"> Crash Type </option>
+        <option value="bounty"> Bounty Value </option>
+      </select>
+</div>
+    <script src="TreeMap.js"></script>
+    <h2> Explanation: </h2>
+    <p>
+      This is a visualization of <a href="https://v8.dev/">V8</a>(The Google Chrome JIT compiler) files being modified because of bug fixes 
+      being committed to the version control system of the source code. Inputs in the upper right allow you to 
+      change how the information is displayed and view different parts. There is also a <b>hover</b> option 
+      where upon hovering over a particular element, it will display "nodeName : sizeParameterValue ...(colorParameterValue)"
+    </p>
+    <p> 
+      <b>Size Parameter</b> is the field which will determine the size of each of the rectangles in the tree map 
+      and by hovering over a particular rectangle will allow you to see the name of the file or folder and the size
+      parameter associated with it. 
+      <br/>
+      <ul>
+        <li>
+      Commits are the number of commit operations that were performed on that file (A single bug could commit to multiple files)
+    </li>
+    <li>
+      Additions are the average number of lines inserted by each of the commits to that file.
+    </li>
+    <li>
+      Deletions are the average number of lines deleted by each of the commits for that file.
+      (Note: modifying a line of code is seen as a deletion of the old line and the addition of the new line)
+    </li>
+    </ul>
+    </p>
+    <p> 
+      <b>Color Parameter</b> is the field which will determine the color of each of the rectangles in the tree map 
+      based on some value associated with that file or folder.
+      <br/>
+      <ul>
+        <li>
+      Depth is simply the amount of nesting done by that node, so a rectangle with a darker purple means it 
+      has more folders which contain it.
+    </li>
+    <li>
+      Difference is the calculation of the number of lines added to that file minus the number of lines deleted
+      from that file, which tells us the amount of change for all parts. Blue means a negative value and more lines
+      were deleted. Close to white is around 0, and the additions and deletions were relatively balanced.
+      Red means a positive value with more insertions than deletions.
+    </li>
+      <li>
+      Check Type is the proportion of bugs in the node with a 'check' type, meaning the bug was caused from
+      something to do with checks, either an invalid check, failed check, or a check being skipped when it shouldn't have been.
+      A check in this case can be defined as a comparison that ensures 'good' behavior in the compiler. White 
+      means none or very few have check type. While a darker orange means a higher proportion of commits done to 
+      that file were from bugs with a check type.
+    </li>
+      <li>
+      Crash Type is the proportion of bugs in the node with a 'crash' type, meaning the bug has caused a 
+      crash within the system. A crash can be a direct crash, a fatal error, or an abort. Similar to check
+      type, white means none or very small proportion have crash type. While a darker red means a higher
+      proportion with crash type.
+    </li>
+    <li>
+      Bounty Value is the sum of reward value (in USD) for solving a bug associated with the commit link. 
+      See the reward system details <a href="https://bughunters.google.com/about/rules/5745167867576320/chrome-vulnerability-reward-program-rules">here.</a>
+      The sum is from all components in that file or folder. White means no reward value stated for those 
+      commits and more green is more reward money for the commits done on those components.  
+    </li>
+    </ul>
+    </p>
+   </body>
+</html>
+  
