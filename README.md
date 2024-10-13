@@ -1,9 +1,7 @@
 Tree Map to Analyze File Commits of V8 Bugs
 ------------
-
+Author: Muaz Ali [muaz@arizona.edu](mailto:muaz@arizona.edu)  
 Author: Tanner Finken [Finkent@arizona.edu](mailto:finkent@arizona.edu)  
-Due Date: 12/6/23
-
 
 ## Notes
 
